@@ -11,10 +11,11 @@ export default {
     username: 'root',
     password: '7b193a0f16ebbf3d',
     database: 'book',
-    timezone: 'UTC',
+    timezone: '+08:00',
     charset: 'utf8mb4',
     entities: ['./**/*.entity.js'],
     synchronize: true,
     logging: true,
+    flags: '-SESSION_TRACK',
   },
 };

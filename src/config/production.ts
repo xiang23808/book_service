@@ -7,9 +7,9 @@ export default {
   DATABASE_CONFIG: {
     type: 'mysql',
     host: 'localhost',
-    port: 33060,
+    port: 3306,
     username: 'root',
-    password: '7b193a0f16ebbf3d',
+    password: 'f67a69a4957d471d',
     database: 'book',
     timezone: 'UTC',
     charset: 'utf8mb4',

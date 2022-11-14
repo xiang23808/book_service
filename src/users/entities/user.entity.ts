@@ -45,13 +45,13 @@ export class User {
   @Column({ type: 'boolean', comment: '用户状态:1-正常:0:禁用', default: 1 })
   status: number;
 
-  @Column({ type: 'date', default: () => 'CURRENT_DATE' })
+  @Column({ type: 'date', default: null })
   created_date: Date;
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'datetime', default: null })
   created_at: string;
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'datetime', default: null })
   updated_at: string;
 
   @Column({ type: 'datetime', nullable: true })

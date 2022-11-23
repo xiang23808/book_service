@@ -6,8 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  HttpStatus,
-  Res,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';

@@ -14,7 +14,7 @@ export default {
     timezone: '+08:00',
     charset: 'utf8mb4',
     entities: ['./**/*.entity.js'],
-    synchronize: true,
+    //synchronize: true,
     logging: true,
     flags: '-SESSION_TRACK',
   },

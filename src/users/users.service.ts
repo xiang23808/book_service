@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -22,6 +22,10 @@ export class UsersService {
 
   findOne(id: any): Promise<User> {
     return this.usersRepository.findOneBy({ id: id });
+  }
+
+  findOneByName(username: any): Promise<User> {
+    return this.usersRepository.findOneBy({ username: username });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

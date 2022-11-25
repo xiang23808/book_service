@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity()
 export class User {
@@ -6,6 +6,7 @@ export class User {
   id: number;
 
   @Column()
+  @Index({ unique: true })
   username: string;
 
   @Column({ nullable: true })
@@ -34,7 +35,7 @@ export class User {
     comment: '最后登录日期',
     //default: new Date(),
   })
-  login_time: Date;
+  login_time: string;
 
   @Column({ comment: '经验', default: 0 })
   exp: string;
@@ -46,7 +47,7 @@ export class User {
   status: number;
 
   @Column({ type: 'date', default: null })
-  created_date: Date;
+  created_date: string;
 
   @Column({ type: 'datetime', default: null })
   created_at: string;

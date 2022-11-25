@@ -3,17 +3,22 @@ import {
   Catch,
   ExceptionFilter,
   HttpException,
+  HttpStatus,
   Logger,
 } from '@nestjs/common';
 
-@Catch(HttpException)
+@Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
 
-    const message = exception.message;
-    const status = exception.getStatus();
+    const message =
+      exception instanceof HttpException ? exception.getResponse() : '未知错误';
+    const status =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
     Logger.log('错误提示', message);
     const errorResponse = {
       code: status,
@@ -22,6 +27,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     };
     response.status(status);
     response.header('Content-Type', 'application/json; charset=utf-8');
-    response.send(errorResponse);
+    response.send(response);
   }
 }

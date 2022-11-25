@@ -1,3 +1,5 @@
+import { DbLogger } from '../tool/log/log4js';
+
 export default {
   // 端口
   port: parseInt(process.env.PORT, 10) || 3000,
@@ -16,6 +18,7 @@ export default {
     entities: ['./**/*.entity.js'],
     //synchronize: true,
     logging: true,
+    logger: new DbLogger(),
     flags: '-SESSION_TRACK',
   },
 };

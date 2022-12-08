@@ -28,6 +28,15 @@ export class UsersService {
     return this.usersRepository.findOneBy({ username: username });
   }
 
+  findPasswordByName(username: any): Promise<User> {
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .where('user.username = :username', { username: username })
+      .select('user.id')
+      .addSelect('user.password')
+      .getOne();
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

@@ -14,19 +14,26 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { IpAddress } from '../tool/ip/ip';
 import { formatDate } from '../tool/date/date';
 import { CreateUserDto } from './dto/create-user.dto';
+import { BcryptService } from '../tool/bcrypt/bcrypt.service';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('create')
-  create(@Body() createUserDto: CreateUserDto, @IpAddress() ipAddress: string) {
+  async create(
+    @Body() createUserDto: CreateUserDto,
+    @IpAddress() ipAddress: string,
+  ) {
     createUserDto.login_ip = ipAddress;
     createUserDto.login_time = new formatDate().getDate();
     createUserDto.created_date = new formatDate().getDate();
     createUserDto.created_at = new formatDate().getTime();
     createUserDto.updated_at = new formatDate().getTime();
-    console.log(createUserDto);
+    createUserDto.password = await new BcryptService().hash(
+      createUserDto.password.toString(),
+      10,
+    );
     return this.usersService.create(createUserDto);
   }
 

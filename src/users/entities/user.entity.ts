@@ -12,7 +12,7 @@ export class User {
   @Column({ nullable: true })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column({ type: 'tinyint', comment: '性别:1-男,2-女', default: 1 })

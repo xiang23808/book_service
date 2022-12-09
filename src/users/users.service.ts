@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
 
 @Injectable()
 export class UsersService {
@@ -13,6 +14,12 @@ export class UsersService {
   ) {}
 
   create(createUserDto: CreateUserDto) {
+    if (this.findOne(createUserDto.id)) {
+      throw new HttpException(
+        ResponseMessage.USER_ALREADY_EXISTS,
+        ResponseStatus.USER_ALREADY_EXISTS,
+      );
+    }
     return this.usersRepository.save(createUserDto);
   }
 

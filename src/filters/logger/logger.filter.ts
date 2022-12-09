@@ -52,10 +52,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     Logger.error(data);
 
     // 程序内异常捕获返回
-    response.status(status).json({
-      data: data.errorData,
-      msg: data.errorMsg,
-      code: data.statusCode,
+    response.json({
+      code: status,
+      msg: error_info,
+      data: error_data,
     });
   }
 }

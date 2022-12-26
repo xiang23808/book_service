@@ -9,6 +9,8 @@ import customConfig from './config';
 import { UsersController } from './users/users.controller';
 import { UserMiddleware } from './user/user.middleware';
 import { BcryptService } from './tool/bcrypt/bcrypt.service';
+import { AmqpController } from './amqp/amqp.controller';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -23,9 +25,22 @@ import { BcryptService } from './tool/bcrypt/bcrypt.service';
         configService.get('DATABASE_CONFIG'),
       inject: [ConfigService], // 记得注入服务，不然useFactory函数中获取不到ConfigService
     }),
+    ClientsModule.register([
+      {
+        name: 'MATH_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: [`amqp://127.0.0.1:5672`],
+          queue: `development`,
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+    ]),
     AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AmqpController],
   providers: [AppService, BcryptService],
 })
 export class AppModule implements NestModule {

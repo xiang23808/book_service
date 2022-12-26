@@ -1,11 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 import { LoggerMiddleware } from './middleware/logger/logger.middleware';
-import { HttpResponseInterceptor } from './interceptor/logger/logger.interceptor';
 import { AllExceptionsFilter } from './filters/logger/logger.filter';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { HttpResponseInterceptor } from './interceptor/logger/logger.interceptor';
+import { TransformInterceptor } from './interceptor/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,6 +25,17 @@ async function bootstrap() {
   app.useGlobalInterceptors(new HttpResponseInterceptor());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: [`amqp://127.0.0.1:5672`],
+      queue: `development`,
+      queueOptions: {
+        durable: false,
+      },
+    },
+  });
+  app.startAllMicroservices();
 
   await app.listen(3000);
 }

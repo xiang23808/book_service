@@ -25,7 +25,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new HttpResponseInterceptor());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
-  app.connectMicroservice<MicroserviceOptions>({
+  //微服务
+  /*app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
       urls: [`amqp://127.0.0.1:5672`],
@@ -35,7 +36,7 @@ async function bootstrap() {
       },
     },
   });
-  app.startAllMicroservices();
+  app.startAllMicroservices();*/
 
   await app.listen(3000);
 }

@@ -10,7 +10,9 @@ import { UsersController } from './users/users.controller';
 import { UserMiddleware } from './user/user.middleware';
 import { BcryptService } from './tool/bcrypt/bcrypt.service';
 import { AmqpController } from './amqp/amqp.controller';
+import { AmqpService } from './amqp/amqp.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 
 @Module({
   imports: [
@@ -25,7 +27,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         configService.get('DATABASE_CONFIG'),
       inject: [ConfigService], // 记得注入服务，不然useFactory函数中获取不到ConfigService
     }),
-    ClientsModule.register([
+    //微服务
+    /*ClientsModule.register([
       {
         name: 'MATH_SERVICE',
         transport: Transport.RMQ,
@@ -37,11 +40,22 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           },
         },
       },
-    ]),
+    ]),*/
+    //队列
+    RabbitMQModule.forRoot(RabbitMQModule, {
+      exchanges: [
+        {
+          name: 'rpc-queue',
+          type: 'topic',
+        },
+      ],
+      uri: 'amqp://localhost:5672',
+      enableControllerDiscovery: true,
+    }),
     AuthModule,
   ],
   controllers: [AppController, AmqpController],
-  providers: [AppService, BcryptService],
+  providers: [AppService, BcryptService, AmqpService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -7,10 +7,16 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Logger } from '../../tool/log/log4js';
+import { isRabbitContext } from '@golevelup/nestjs-rabbitmq';
 
 @Injectable()
 export class HttpResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    // Do nothing if this is a RabbitMQ event
+    if (isRabbitContext(context)) {
+      return next.handle();
+    }
+
     const req = context.getArgByIndex(1).req;
 
     return next.handle().pipe(

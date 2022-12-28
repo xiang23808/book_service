@@ -1,7 +1,13 @@
 export enum ResponseStatus {
   USER_ALREADY_EXISTS = 40001,
+  MISSING_ARTICLE_TITLE = 41001,
+  ARTICLE_ALREADY_EXISTS = 41002,
+  ARTICLE_DOES_NOT_EXIST = 41003,
 }
 
 export enum ResponseMessage {
   USER_ALREADY_EXISTS = '用户已存在',
+  MISSING_ARTICLE_TITLE = '缺少文章标题',
+  ARTICLE_ALREADY_EXISTS = '文章已存在',
+  ARTICLE_DOES_NOT_EXIST = '文章不存在',
 }

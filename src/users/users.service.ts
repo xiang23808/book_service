@@ -13,7 +13,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto): Promise<User> {
     if (this.findOne(createUserDto.id)) {
       throw new HttpException(
         ResponseMessage.USER_ALREADY_EXISTS,

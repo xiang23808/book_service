@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -13,14 +14,17 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
-    if (this.findOne(createUserDto.id)) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    if (await this.findOneByName(createUserDto.username)) {
       throw new HttpException(
         ResponseMessage.USER_ALREADY_EXISTS,
         ResponseStatus.USER_ALREADY_EXISTS,
       );
     }
-    return this.usersRepository.save(createUserDto);
+    //调用实体监听器
+    const entity = plainToClass(User, createUserDto);
+    const user = await this.usersRepository.save(entity);
+    return this.findOne(user.id);
   }
 
   findAll(): Promise<User[]> {

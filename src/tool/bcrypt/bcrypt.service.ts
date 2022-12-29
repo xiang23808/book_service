@@ -15,9 +15,9 @@ export class BcryptService {
   /**
    * 生成 hash
    * @param rawStr
-   * @param salt?
+   * @param salt??
    */
-  async hash(rawStr: string, salt?: number) {
+  async hash(rawStr: string, salt?: string) {
     return bcrypt.hash(rawStr, salt || BcryptService.SALT_ROUNDS);
   }
   /**

@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Index,
+  BeforeInsert,
+} from 'typeorm';
 import { BcryptService } from '../../tool/bcrypt/bcrypt.service';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -56,11 +63,12 @@ export class User {
   @Column({ type: 'datetime', default: null })
   updated_at: string;
 
+  @Exclude()
   @Column({ type: 'datetime', nullable: true })
   deleted_at: string;
 
   @BeforeInsert()
   async encryptPwd() {
-    this.password = await new BcryptService().hash(this.password,10);
+    this.password = await new BcryptService().hash(this.password.toString());
   }
 }

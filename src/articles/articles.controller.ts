@@ -9,13 +9,15 @@ import {
   Put,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
+import { CreateArticleDto } from './dto/create-article.dto';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Post('create')
-  create(@Body() post) {
+  create(@Body() post: CreateArticleDto) {
     return this.articlesService.create(post);
   }
 
@@ -30,7 +32,7 @@ export class ArticlesController {
   }
 
   @Put()
-  update(@Body() body) {
+  update(@Body() body: UpdateArticleDto) {
     const { id, ...post } = body;
     return this.articlesService.updateById(id, post);
   }

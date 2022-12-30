@@ -28,15 +28,21 @@ export class UsersService {
   }
 
   findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({ relations: ['info', 'articles'] });
   }
 
   findOne(id: any): Promise<User> {
-    return this.usersRepository.findOneBy({ id: id });
+    return this.usersRepository.findOne({
+      where: { id: id },
+      relations: ['info', 'articles'],
+    });
   }
 
   findOneByName(username: any): Promise<User> {
-    return this.usersRepository.findOneBy({ username: username });
+    return this.usersRepository.findOne({
+      where: { username: username },
+      relations: ['info', 'articles'],
+    });
   }
 
   findPasswordByName(username: any): Promise<User> {
@@ -48,8 +54,17 @@ export class UsersService {
       .getOne();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const exitsUser = await this.usersRepository.findOneBy({ id: id });
+    if (!exitsUser) {
+      throw new HttpException(
+        ResponseMessage.ARTICLE_DOES_NOT_EXIST,
+        ResponseStatus.ARTICLE_DOES_NOT_EXIST,
+      );
+    }
+    const updateUser = this.usersRepository.merge(exitsUser, updateUserDto);
+
+    return this.usersRepository.save(updateUser);
   }
 
   async remove(id: number) {

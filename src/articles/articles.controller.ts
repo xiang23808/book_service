@@ -6,7 +6,7 @@ import {
   Param,
   Delete,
   Query,
-  Put,
+  Patch,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -31,9 +31,8 @@ export class ArticlesController {
     return this.articlesService.findAll(query);
   }
 
-  @Put()
-  update(@Body() body: UpdateArticleDto) {
-    const { id, ...post } = body;
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() post: UpdateArticleDto) {
     return this.articlesService.updateById(id, post);
   }
 

@@ -17,7 +17,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { IpAddress } from '../tool/ip/ip';
 import { formatDate } from '../tool/date/date';
 import { CreateUserDto } from './dto/create-user.dto';
-import { BcryptService } from '../tool/bcrypt/bcrypt.service';
 
 @Controller('users')
 export class UsersController {
@@ -52,6 +51,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    console.log(id);
     return this.usersService.update(+id, updateUserDto);
   }
 

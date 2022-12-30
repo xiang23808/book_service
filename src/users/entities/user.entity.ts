@@ -3,10 +3,12 @@ import {
   Column,
   PrimaryGeneratedColumn,
   Index,
-  BeforeInsert,
+  BeforeInsert, OneToOne, OneToMany
 } from 'typeorm';
 import { BcryptService } from '../../tool/bcrypt/bcrypt.service';
 import { Exclude } from 'class-transformer';
+import { InfoEntity } from '../info/entities/info.entity';
+import { Article } from '../../articles/entities/article.entity';
 
 @Entity()
 export class User {
@@ -71,4 +73,10 @@ export class User {
   async encryptPwd() {
     this.password = await new BcryptService().hash(this.password.toString());
   }
+
+  @OneToOne(() => InfoEntity, (info) => info.user)
+  info: InfoEntity;
+
+  @OneToMany(() => Article, (articles) => articles.user)
+  articles: Article[];
 }

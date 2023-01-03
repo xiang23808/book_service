@@ -14,6 +14,7 @@ import { AmqpService } from './amqp/amqp.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ArticlesModule } from './articles/articles.module';
+import { LocalModule } from './upload/local/local.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { ArticlesModule } from './articles/articles.module';
     }),
     AuthModule,
     ArticlesModule,
+    LocalModule,
   ],
   controllers: [AppController, AmqpController],
   providers: [AppService, BcryptService, AmqpService],

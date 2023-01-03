@@ -7,6 +7,9 @@ import { AllExceptionsFilter } from './filters/logger/logger.filter';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { HttpResponseInterceptor } from './interceptor/logger/logger.interceptor';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
+import { doc } from 'prettier';
+import * as express from 'express';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +24,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
   app.use(new LoggerMiddleware().use);
+  // 配置 public 文件夹为静态目录，以达到可直接访问下面文件的目的
+  const rootDir = join(__dirname, '..');
+  app.use('/public', express.static(join(rootDir, 'public')));
+
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalInterceptors(new HttpResponseInterceptor());
   app.useGlobalPipes(new ValidationPipe());

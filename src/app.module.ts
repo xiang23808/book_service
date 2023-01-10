@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { CacheModule, CacheStore, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -15,6 +15,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ArticlesModule } from './articles/articles.module';
 import { LocalModule } from './upload/local/local.module';
+import { redisStore } from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -23,6 +24,15 @@ import { LocalModule } from './upload/local/local.module';
       isGlobal: true, // 作用于全局
       load: [customConfig], // 加载自定义配置项
     }),
+
+    CacheModule.register({
+      store: redisStore as unknown as CacheStore,
+      isGlobal: true,
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        configService.get('REDIS_CONFIG'),
+    }),
+
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule], // 数据库配置项依赖于ConfigModule，需在此引入
       useFactory: (configService: ConfigService) =>

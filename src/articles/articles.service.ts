@@ -1,8 +1,14 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  CACHE_MANAGER,
+  HttpException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { Article } from './entities/article.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
+import { Cache } from 'cache-manager';
 
 export interface ArticlesRo {
   list: Article[];
@@ -13,6 +19,8 @@ export interface ArticlesRo {
 export class ArticlesService {
   constructor(
     @InjectRepository(Article) private articlesRepository: Repository<Article>,
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
   ) {}
 
   async create(post: Partial<Article>): Promise<Article> {
@@ -48,8 +56,10 @@ export class ArticlesService {
     return { list: articles, count: count };
   }
 
-  findById(id): Promise<Article> {
-    return this.articlesRepository.findOne({ where: { id } });
+  async findById(id): Promise<Article> {
+    const article = await this.articlesRepository.findOne({ where: { id } });
+    this.cacheManager.set(`${id} 'article`, JSON.stringify(article), 1800);
+    return article;
   }
 
   async updateById(id, post): Promise<Article> {

@@ -1,0 +1,13 @@
+kind: pipeline
+type: docker
+name: build
+
+steps:
+  - name: start
+    commands:
+      cd /www/wwwroot/book_service
+      git pull
+      npm run build
+      pm2 restart all
+    when:
+      status: [failure, success]

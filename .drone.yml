@@ -7,7 +7,7 @@ steps:
     image: appleboy/drone-ssh
     settings:
       host:
-        - 127.0.0.1
+        - 172.17.0.1
       username: root
       key:
         from_secret: ssh_key
@@ -15,6 +15,6 @@ steps:
       command_timeout: 2m
       script:
         - cd /www/wwwroot/book_service
-        - git pull
+        - npm install
         - npm run build
         - pm2 restart all

@@ -54,22 +54,22 @@ import { redisStore } from 'cache-manager-redis-store';
       },
     ]),*/
     //队列
-    RabbitMQModule.forRoot(RabbitMQModule, {
-      exchanges: [
-        {
-          name: 'rpc-queue',
-          type: 'topic',
-        },
-      ],
-      uri: 'amqp://localhost:5672',
-      enableControllerDiscovery: true,
-    }),
+    // RabbitMQModule.forRoot(RabbitMQModule, {
+    //   exchanges: [
+    //     {
+    //       name: 'rpc-queue',
+    //       type: 'topic',
+    //     },
+    //   ],
+    //   uri: 'amqp://localhost:5672',
+    //   enableControllerDiscovery: true,
+    // }),
     AuthModule,
     ArticlesModule,
     LocalModule,
   ],
-  controllers: [AppController, AmqpController],
-  providers: [AppService, BcryptService, AmqpService],
+  controllers: [AppController],
+  providers: [AppService, BcryptService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -6,9 +6,9 @@ steps:
   - name: ssh
     image: appleboy/drone-ssh
     settings:
-      host:
-        - 172.17.0.1
-      username: root
+      host: 172.17.0.1
+      user:
+        from_secret: root
       key:
         from_secret: ssh_key
       port: 22

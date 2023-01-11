@@ -3,11 +3,18 @@ type: docker
 name: build
 
 steps:
-  - name: start
-    image: node
-    commands:
-    - npm install
-    - npm run build
-    - pm2 restart all
-    when:
-      status: [failure, success]
+  - name: ssh
+    image: appleboy/drone-ssh
+    settings:
+      host:
+        - 127.0.0.1
+      username: root
+      key:
+        from_secret: ssh_key
+      port: 22
+      command_timeout: 2m
+      script:
+        - cd /www/wwwroot/book_service
+        - git pull
+        - npm run build
+        - pm2 restart all

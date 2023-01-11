@@ -4,9 +4,9 @@ name: build
 
 steps:
   - name: start
+    image: node
     commands:
-    - cd /www/wwwroot/book_service
-    - git pull
+    - npm install
     - npm run build
     - pm2 restart all
     when:

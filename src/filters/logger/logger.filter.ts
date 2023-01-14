@@ -54,7 +54,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     // 程序内异常捕获返回
     response.json({
       code: status,
-      msg: error_info,
+      message: error_info,
       data: error_data,
     });
   }

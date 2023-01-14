@@ -1,7 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { BcryptService } from '../tool/bcrypt/bcrypt.service';
+import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
 @Injectable()
 export class AuthService {
   constructor(
@@ -20,7 +21,10 @@ export class AuthService {
     ) {
       return user;
     }
-    throw UnauthorizedException;
+    throw new HttpException(
+      ResponseMessage.USER_ALREADY_OR_PASSWORD_ERROR,
+      ResponseStatus.USER_ALREADY_OR_PASSWORD_ERROR,
+    );
   }
 
   async login(user: any) {

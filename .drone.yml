@@ -2,6 +2,9 @@ kind: pipeline
 type: docker
 name: build
 
+clone:
+  disable: true
+
 steps:
   - name: ssh
     image: appleboy/drone-ssh
@@ -16,6 +19,7 @@ steps:
       command_timeout: 2m
       script:
         - cd /www/wwwroot/book_service
+        - git pull
         - npm install
         - npm run build
         - pm2 restart all

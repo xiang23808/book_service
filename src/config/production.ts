@@ -8,11 +8,11 @@ export default {
   // 数据库配置
   DATABASE_CONFIG: {
     type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: 'f67a69a4957d471d',
-    database: 'book',
+    host: process.env.DB_HOST ?? 'localhost',
+    port: process.env.DB_PORT ?? 3306,
+    username: process.env.DB_USERNAME ?? 'root',
+    password: process.env.DB_PASSWORD ?? 'f67a69a4957d471d',
+    database: process.env.DB_DATABASE ?? 'book',
     timezone: '+08:00',
     charset: 'utf8mb4',
     //entities: ['./**/*.entity.js'],

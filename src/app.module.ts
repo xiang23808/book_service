@@ -1,6 +1,10 @@
-import { CacheModule, CacheStore, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import {
+  CacheModule,
+  CacheStore,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -8,7 +12,6 @@ import { AuthModule } from './auth/auth.module';
 import customConfig from './config';
 import { UsersController } from './users/users.controller';
 import { UserMiddleware } from './user/user.middleware';
-import { BcryptService } from './tool/bcrypt/bcrypt.service';
 import { AmqpController } from './amqp/amqp.controller';
 import { AmqpService } from './amqp/amqp.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -16,6 +19,9 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ArticlesModule } from './articles/articles.module';
 import { LocalModule } from './upload/local/local.module';
 import { redisStore } from 'cache-manager-redis-store';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { BcryptService } from './tool/bcrypt/bcrypt.service';
 
 @Module({
   imports: [

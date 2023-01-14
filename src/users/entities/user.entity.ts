@@ -3,12 +3,14 @@ import {
   Column,
   PrimaryGeneratedColumn,
   Index,
-  BeforeInsert, OneToOne, OneToMany
+  BeforeInsert,
+  OneToOne,
+  OneToMany,
 } from 'typeorm';
-import { BcryptService } from '../../tool/bcrypt/bcrypt.service';
 import { Exclude } from 'class-transformer';
 import { InfoEntity } from '../info/entities/info.entity';
 import { Article } from '../../articles/entities/article.entity';
+import { BcryptService } from '../../tool/bcrypt/bcrypt.service';
 
 @Entity()
 export class User {

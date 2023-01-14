@@ -8,11 +8,11 @@ export default {
   // 数据库配置
   DATABASE_CONFIG: {
     type: 'mysql',
-    host: 'localhost',
-    port: 33060,
-    username: 'root',
-    password: '7b193a0f16ebbf3d',
-    database: 'book',
+    host: process.env.DB_HOST ?? 'localhost',
+    port: process.env.DB_PORT ?? 33060,
+    username: process.env.DB_USERNAME ?? 'root',
+    password: process.env.DB_PASSWORD ?? '7b193a0f16ebbf3d',
+    database: process.env.DB_DATABASE ?? 'book',
     timezone: '+08:00',
     charset: 'utf8mb4',
     autoLoadEntities: true,
@@ -21,6 +21,7 @@ export default {
     logging: true,
     logger: new DbLogger(),
     flags: '-SESSION_TRACK',
+    migrations: ['migration/*.js'],
   },
 
   REDIS_CONFIG: {

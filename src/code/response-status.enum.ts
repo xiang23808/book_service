@@ -4,6 +4,8 @@ export enum ResponseStatus {
   MISSING_ARTICLE_TITLE = 41001,
   ARTICLE_ALREADY_EXISTS = 41002,
   ARTICLE_DOES_NOT_EXIST = 41003,
+  SMS_SEND_FAIL = 41004,
+  SMS_SEND_WAIT = 41005,
 }
 
 export enum ResponseMessage {
@@ -12,4 +14,6 @@ export enum ResponseMessage {
   MISSING_ARTICLE_TITLE = '缺少文章标题',
   ARTICLE_ALREADY_EXISTS = '文章已存在',
   ARTICLE_DOES_NOT_EXIST = '文章不存在',
+  SMS_SEND_FAIL = '短信发送失败',
+  SMS_SEND_WAIT = '发送频率过快，轻稍后再发送',
 }

@@ -22,6 +22,8 @@ import { redisStore } from 'cache-manager-redis-store';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BcryptService } from './tool/bcrypt/bcrypt.service';
+import { SmsService } from './sms/sms.service';
+import { SmsModule } from './sms/sms.module';
 
 @Module({
   imports: [
@@ -73,9 +75,10 @@ import { BcryptService } from './tool/bcrypt/bcrypt.service';
     AuthModule,
     ArticlesModule,
     LocalModule,
+    SmsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, BcryptService],
+  providers: [AppService, BcryptService, SmsService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -29,6 +29,7 @@
     "typeorm:revert-migration": "npm run typeorm -- -d ./src/config/orm.config.ts migration:revert"
   },
   "dependencies": {
+    "@alicloud/dysmsapi20170525": "^2.0.23",
     "@golevelup/nestjs-rabbitmq": "^3.4.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",

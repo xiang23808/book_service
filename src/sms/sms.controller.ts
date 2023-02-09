@@ -1,4 +1,11 @@
-import { Body, CACHE_MANAGER, Controller, HttpException, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  CACHE_MANAGER,
+  Controller,
+  HttpException,
+  Inject,
+  Post,
+} from '@nestjs/common';
 import { SendSmsDto } from './dto/send-sms.dto';
 import { SmsService } from './sms.service';
 import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
@@ -14,6 +21,15 @@ export class SmsController {
 
   @Post('send_sms')
   async sendSms(@Body() sendSmsDto: SendSmsDto) {
+    const code = await this.smsService.randomString(6);
+    this.cacheManager.set(
+      `${sendSmsDto.phone} 'send_sms`,
+      JSON.stringify(code),
+      300,
+    );
+    if (process.env.NODE_ENV === 'development') {
+      return code;
+    }
     const key = await this.cacheManager.get(`${sendSmsDto.phone} 'send_sms`);
     if (typeof key === 'string') {
       throw new HttpException(
@@ -22,7 +38,6 @@ export class SmsController {
       );
     }
 
-    const code = await this.smsService.randomString(6);
     const res = await this.smsService.sendSms(sendSmsDto.phone, code);
 
     if (JSON.parse(res).code === 'OK') {

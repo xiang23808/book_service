@@ -4,6 +4,7 @@ import { Article } from '../articles/entities/article.entity';
 import { User } from '../users/entities/user.entity';
 import { InfoEntity } from '../users/info/entities/info.entity';
 import { AddCloumnAticle1673680241747 } from '../migrations/1673680241747-AddCloumnAticle';
+import { AddCloumn1Users1675927627439 } from '../migrations/1675927627439-AddCloumn1Users';
 
 config();
 
@@ -15,5 +16,5 @@ export default new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: [Article, User, InfoEntity],
-  migrations: [AddCloumnAticle1673680241747],
+  migrations: [AddCloumnAticle1673680241747, AddCloumn1Users1675927627439],
 });

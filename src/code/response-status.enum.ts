@@ -6,6 +6,8 @@ export enum ResponseStatus {
   ARTICLE_DOES_NOT_EXIST = 41003,
   SMS_SEND_FAIL = 41004,
   SMS_SEND_WAIT = 41005,
+  PLEASE_SEND_THE_VERIFICATION_CODE_FIRST = 41006,
+  VERIFICATION_CODE_ERROR = 41007,
 }
 
 export enum ResponseMessage {
@@ -16,4 +18,6 @@ export enum ResponseMessage {
   ARTICLE_DOES_NOT_EXIST = '文章不存在',
   SMS_SEND_FAIL = '短信发送失败',
   SMS_SEND_WAIT = '发送频率过快，轻稍后再发送',
+  PLEASE_SEND_THE_VERIFICATION_CODE_FIRST = '请先发送验证码',
+  VERIFICATION_CODE_ERROR = '验证码错误',
 }

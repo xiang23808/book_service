@@ -1,7 +1,15 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { PhoneLoginDto } from '../users/dto/phone-login.dto';
+import { IpAddress } from '../tool/ip/ip';
 
 @Controller('auth')
 export class AuthController {
@@ -17,5 +25,13 @@ export class AuthController {
   @Get('profile')
   getProfile(@Request() req) {
     return { user: req.user };
+  }
+
+  @Post('phone_login')
+  phoneLogin(
+    @Body() phoneLoginDto: PhoneLoginDto,
+    @IpAddress() ipAddress: string,
+  ) {
+    return this.authService.phoneLogin(phoneLoginDto, ipAddress);
   }
 }

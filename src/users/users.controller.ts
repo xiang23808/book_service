@@ -17,6 +17,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { IpAddress } from '../tool/ip/ip';
 import { formatDate } from '../tool/date/date';
 import { CreateUserDto } from './dto/create-user.dto';
+import { PhoneLoginDto } from './dto/phone-login.dto';
 
 @Controller('users')
 export class UsersController {
@@ -66,4 +67,5 @@ export class UsersController {
   findAll() {
     return this.usersService.findAll();
   }
+
 }

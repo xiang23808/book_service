@@ -32,8 +32,6 @@ export class SmsService {
   }
 
   async sendSms(phone: string, code: string): Promise<any> {
-
-
     // 工程代码泄露可能会导致AccessKey泄露，并威胁账号下所有资源的安全性。以下代码示例仅供参考，建议使用更安全的 STS 方式，更多鉴权访问方式请参见：https://help.aliyun.com/document_detail/378664.html
     const client = SmsService.createClient(
       process.env.SMS_ALIYUN_ACCESS_ID,

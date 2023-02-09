@@ -21,6 +21,9 @@ export class User {
   @Index({ unique: true })
   username: string;
 
+  @Column()
+  phone: string;
+
   @Column({ nullable: true })
   email: string;
 

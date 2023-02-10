@@ -10,6 +10,7 @@ import { Logger } from '../../tool/log/log4js';
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
+    console.log(11);
     const request = host.switchToHttp().getRequest();
     const response = host.switchToHttp().getResponse();
     const status =
@@ -54,7 +55,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     // 程序内异常捕获返回
     response.json({
       code: status,
-      message: error_info,
+      message: error_msg ?? error_info,
       data: error_data,
     });
   }

@@ -11,12 +11,17 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
 import { plainToClass } from 'class-transformer';
+import { SetPasswordDto } from './dto/set-password.dto';
+import { Cache } from 'cache-manager';
+import { BcryptService } from '../tool/bcrypt/bcrypt.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     public usersRepository: Repository<User>,
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -76,4 +81,37 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
+  async setPassword(setPasswordDto: SetPasswordDto) {
+    const key = await this.cacheManager.get(
+      `${setPasswordDto.phone} 'send_sms`,
+    );
+    if (typeof key === 'string') {
+      const code = JSON.parse(key);
+      if (code !== setPasswordDto.verification_code) {
+        throw new HttpException(
+          ResponseMessage.VERIFICATION_CODE_ERROR,
+          ResponseStatus.VERIFICATION_CODE_ERROR,
+        );
+      }
+      const userModel = await this.usersRepository.findOneBy({
+        phone: setPasswordDto.phone,
+      });
+      if (!userModel) {
+        throw new HttpException(
+          ResponseMessage.ARTICLE_DOES_NOT_EXIST,
+          ResponseStatus.ARTICLE_DOES_NOT_EXIST,
+        );
+      }
+      userModel.password = await new BcryptService().hash(
+        setPasswordDto.password.toString(),
+      );
+      await this.usersRepository.save(userModel);
+      this.cacheManager.del(`${setPasswordDto.phone} 'send_sms`);
+      return true;
+    }
+    throw new HttpException(
+      ResponseMessage.PLEASE_SEND_THE_VERIFICATION_CODE_FIRST,
+      ResponseStatus.PLEASE_SEND_THE_VERIFICATION_CODE_FIRST,
+    );
+  }
 }

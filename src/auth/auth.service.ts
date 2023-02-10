@@ -74,6 +74,7 @@ export class AuthService {
         user = userModel;
       }
       const payload = { username: user.username, sub: user.id };
+      this.cacheManager.del(`${phoneLoginDto.phone} 'send_sms`);
       return {
         access_token: this.jwtService.sign(payload),
       };

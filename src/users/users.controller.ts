@@ -18,6 +18,7 @@ import { IpAddress } from '../tool/ip/ip';
 import { formatDate } from '../tool/date/date';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PhoneLoginDto } from './dto/phone-login.dto';
+import { SetPasswordDto } from './dto/set-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -68,4 +69,10 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Post('set_password')
+  async setPassword(@Body() setPasswordDto: SetPasswordDto) {
+    const res = await this.usersService.setPassword(setPasswordDto);
+    console.log(res);
+    return '修改成功';
+  }
 }

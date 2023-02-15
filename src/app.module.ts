@@ -24,6 +24,7 @@ import { AppService } from './app.service';
 import { BcryptService } from './tool/bcrypt/bcrypt.service';
 import { SmsService } from './sms/sms.service';
 import { SmsModule } from './sms/sms.module';
+import { HelpsModule } from './information/helps/helps.module';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { SmsModule } from './sms/sms.module';
     ArticlesModule,
     LocalModule,
     SmsModule,
+    HelpsModule,
   ],
   controllers: [AppController],
   providers: [AppService, BcryptService, SmsService],

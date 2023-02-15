@@ -23,7 +23,7 @@ export class LocalController {
   @Post('local')
   @UseInterceptors(FileInterceptor('file'))
   create(@UploadedFile() file: Express.Multer.File) {
-    return `${process.env.APP_URL}.${file.path}`;
+    return `${process.env.APP_URL}/${file.path}`;
   }
 
   @Get()

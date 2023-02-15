@@ -17,7 +17,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { IpAddress } from '../tool/ip/ip';
 import { formatDate } from '../tool/date/date';
 import { CreateUserDto } from './dto/create-user.dto';
-import { PhoneLoginDto } from './dto/phone-login.dto';
 import { SetPasswordDto } from './dto/set-password.dto';
 
 @Controller('users')

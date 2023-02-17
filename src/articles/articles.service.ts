@@ -38,7 +38,6 @@ export class ArticlesService {
         ResponseStatus.ARTICLE_ALREADY_EXISTS,
       );
     }
-    console.log(post);
     return await this.articlesRepository.save(post);
   }
 

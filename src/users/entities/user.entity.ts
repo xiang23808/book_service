@@ -11,6 +11,7 @@ import { Exclude } from 'class-transformer';
 import { InfoEntity } from '../info/entities/info.entity';
 import { Article } from '../../articles/entities/article.entity';
 import { BcryptService } from '../../tool/bcrypt/bcrypt.service';
+import { Feedback } from '../../information/feedbacks/entities/feedback.entity';
 
 @Entity()
 export class User {
@@ -84,4 +85,7 @@ export class User {
 
   @OneToMany(() => Article, (articles) => articles.user)
   articles: Article[];
+
+  @OneToMany(() => Feedback, (feedback) => feedback.user)
+  feedback: Feedback[];
 }

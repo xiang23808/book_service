@@ -6,6 +6,7 @@ import { InfoEntity } from '../users/info/entities/info.entity';
 import { AddCloumnAticle1673680241747 } from '../migrations/1673680241747-AddCloumnAticle';
 import { AddCloumn1Users1675927627439 } from '../migrations/1675927627439-AddCloumn1Users';
 import { createInformationHelps1676369335162 } from '../migrations/1676369335162-createInformationHelps';
+import { createInformationFeedbacks1676624192270 } from '../migrations/1676624192270-createInformationFeedbacks';
 
 config();
 
@@ -21,5 +22,6 @@ export default new DataSource({
     AddCloumnAticle1673680241747,
     AddCloumn1Users1675927627439,
     createInformationHelps1676369335162,
+    createInformationFeedbacks1676624192270,
   ],
 });

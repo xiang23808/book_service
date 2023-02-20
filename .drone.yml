@@ -21,6 +21,6 @@ steps:
         - cd /www/wwwroot/book_service
         - git pull
         - npm install
-        - npm run typeorm:run-migrations
+        #- npm run typeorm:run-migrations
         - npm run build
         - pm2 restart all

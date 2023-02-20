@@ -16,7 +16,7 @@ export default {
     timezone: '+08:00',
     charset: 'utf8mb4',
     //entities: ['./**/*.entity.js'],
-    synchronize: false,
+    synchronize: true,
     autoLoadEntities: true,
     logging: true,
     logger: new DbLogger(),

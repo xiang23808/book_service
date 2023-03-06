@@ -26,6 +26,7 @@ import { SmsService } from './sms/sms.service';
 import { SmsModule } from './sms/sms.module';
 import { HelpsModule } from './information/helps/helps.module';
 import { FeedbacksModule } from './information/feedbacks/feedbacks.module';
+import { SurveyModule } from './task/survey/survey.module';
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import { FeedbacksModule } from './information/feedbacks/feedbacks.module';
     SmsModule,
     HelpsModule,
     FeedbacksModule,
+    SurveyModule,
   ],
   controllers: [AppController],
   providers: [AppService, BcryptService, SmsService],

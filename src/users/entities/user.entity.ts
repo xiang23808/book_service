@@ -12,6 +12,7 @@ import { InfoEntity } from '../info/entities/info.entity';
 import { Article } from '../../articles/entities/article.entity';
 import { BcryptService } from '../../tool/bcrypt/bcrypt.service';
 import { Feedback } from '../../information/feedbacks/entities/feedback.entity';
+import { SurveyAnswer } from '../../task/survey/answer/entities/survey_answer.entity';
 
 @Entity()
 export class User {
@@ -88,4 +89,7 @@ export class User {
 
   @OneToMany(() => Feedback, (feedback) => feedback.user)
   feedback: Feedback[];
+
+  @OneToMany(() => SurveyAnswer, (surveyAnswer) => surveyAnswer.user)
+  surveyAnswer: SurveyAnswer[];
 }

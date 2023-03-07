@@ -64,6 +64,6 @@ export class OptionService {
         ResponseStatus.ARTICLE_DOES_NOT_EXIST,
       );
     }
-    return await this.optionsRepository.remove(exitsOption);
+    return await this.optionsRepository.softRemove(exitsOption);
   }
 }

@@ -1,5 +1,5 @@
 import {
-  Column,
+  Column, DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -54,6 +54,13 @@ export class SurveyQuestion {
     comment: '图片地址',
   })
   pic_url: string;
+
+  @DeleteDateColumn({
+    name: 'deleted_at',
+    type: 'datetime',
+    comment: '删除时间',
+  })
+  deleted_at: string;
 
   @ManyToOne(() => Survey, (survey) => survey.survey_questions)
   @JoinColumn({ name: 'survey_id' })

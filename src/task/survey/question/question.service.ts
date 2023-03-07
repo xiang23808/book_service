@@ -64,6 +64,6 @@ export class QuestionService {
         ResponseStatus.ARTICLE_DOES_NOT_EXIST,
       );
     }
-    return await this.questionsRepository.remove(exitsQuestion);
+    return await this.questionsRepository.softRemove(exitsQuestion);
   }
 }

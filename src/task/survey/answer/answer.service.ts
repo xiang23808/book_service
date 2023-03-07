@@ -1,10 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  ResponseMessage,
-  ResponseStatus,
-} from '../../../code/response-status.enum';
+import { ResponseMessage, ResponseStatus } from '../../../code/response-status.enum';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { SurveyAnswer } from './entities/survey_answer.entity';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
@@ -17,7 +14,21 @@ export class AnswerService {
   ) {}
 
   async create(createAnswerDto: CreateAnswerDto) {
-    return await this.answersRepository.save(createAnswerDto);
+    const answers = [];
+    createAnswerDto.answers.forEach(function (value: any) {
+      answers.push({
+        survey_id: createAnswerDto.survey_id,
+        question_id: value.question_id,
+        option_id: value.option_id,
+        content: value.content,
+        user_id: createAnswerDto.user.id,
+      });
+    });
+    return await this.answersRepository
+      .createQueryBuilder('answer')
+      .insert()
+      .values(answers)
+      .execute();
   }
 
   async findAll(query) {
@@ -64,6 +75,6 @@ export class AnswerService {
         ResponseStatus.ARTICLE_DOES_NOT_EXIST,
       );
     }
-    return await this.answersRepository.remove(exitsAnswer);
+    return await this.answersRepository.softRemove(exitsAnswer);
   }
 }

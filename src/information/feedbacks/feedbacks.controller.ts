@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Param, Delete, Query, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { FeedbacksService } from './feedbacks.service';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { UpdateFeedbackDto } from './dto/update-feedback.dto';
@@ -16,16 +26,19 @@ export class FeedbacksController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll(@Query() query) {
     return this.feedbacksService.findAll(query);
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.feedbacksService.findOne(+id);
   }
 
   @Post(':id')
+  @UseGuards(JwtAuthGuard)
   update(
     @Param('id') id: string,
     @Body() updateFeedbackDto: UpdateFeedbackDto,
@@ -34,6 +47,7 @@ export class FeedbacksController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.feedbacksService.remove(+id);
   }

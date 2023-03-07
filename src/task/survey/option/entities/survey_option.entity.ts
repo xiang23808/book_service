@@ -1,14 +1,13 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Survey } from '../../entities/survey.entity';
 import { SurveyQuestion } from '../../question/entities/survey_question.entity';
-import { SurveyAnswer } from '../../answer/entities/survey_answer.entity';
 
 @Entity('survey_options')
 export class SurveyOption {
@@ -45,6 +44,13 @@ export class SurveyOption {
   })
   pic_url: string;
 
+  @DeleteDateColumn({
+    name: 'deleted_at',
+    type: 'datetime',
+    comment: '删除时间',
+  })
+  deleted_at: string;
+
   @ManyToOne(() => Survey, (survey) => survey.survey_options)
   @JoinColumn({ name: 'survey_id' })
   survey: Survey;
@@ -55,7 +61,4 @@ export class SurveyOption {
   )
   @JoinColumn({ name: 'question_id' })
   survey_question: SurveyQuestion;
-
-  @OneToOne(() => SurveyAnswer, (survey_answer) => survey_answer.survey_option)
-  survey_answer: SurveyAnswer;
 }

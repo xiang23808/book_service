@@ -9,7 +9,6 @@ import {
   ResponseStatus,
 } from '../../code/response-status.enum';
 import { SurveyQuestion } from './question/entities/survey_question.entity';
-import { Logger } from '../../tool/log/log4js';
 import { CreateQuestionDto } from './question/dto/create-question.dto';
 import { CreateOptionDto } from './option/dto/create-option.dto';
 import { SurveyOption } from './option/entities/survey_option.entity';
@@ -79,7 +78,7 @@ export class SurveyService {
       .getOne();
   }
 
-  async update(id: number, updateSurveyDto) {
+  async update(id: number, updateSurveyDto: UpdateSurveyDto) {
     const exitsSurvey = await this.surveyRepository.findOneBy({ id: id });
     if (!exitsSurvey) {
       throw new HttpException(

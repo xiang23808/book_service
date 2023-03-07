@@ -1,4 +1,3 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateSurveyDto } from './create-survey.dto';
+import { Survey } from '../entities/survey.entity';
 
-export class UpdateSurveyDto extends PartialType(CreateSurveyDto) {}
+export class UpdateSurveyDto extends Survey {}

@@ -23,7 +23,7 @@ export class User {
   @Index({ unique: true })
   username: string;
 
-  @Column()
+  @Column({ default: '' })
   phone: string;
 
   @Column({ nullable: true })

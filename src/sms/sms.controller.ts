@@ -10,6 +10,7 @@ import { SendSmsDto } from './dto/send-sms.dto';
 import { SmsService } from './sms.service';
 import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
 import { Cache } from 'cache-manager';
+import { Logger } from '../tool/log/log4js';
 
 @Controller('sms')
 export class SmsController {
@@ -22,11 +23,6 @@ export class SmsController {
   @Post('send_sms')
   async sendSms(@Body() sendSmsDto: SendSmsDto) {
     const code = await this.smsService.randomString(6);
-    this.cacheManager.set(
-      `${sendSmsDto.phone} 'send_sms`,
-      JSON.stringify(code),
-      300,
-    );
     if (process.env.NODE_ENV === 'development') {
       return code;
     }

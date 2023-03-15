@@ -10,7 +10,6 @@ import { Logger } from '../../tool/log/log4js';
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
-    console.log(11);
     const request = host.switchToHttp().getRequest();
     const response = host.switchToHttp().getResponse();
     const status =

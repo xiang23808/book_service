@@ -18,7 +18,7 @@ export enum ResponseMessage {
   ARTICLE_ALREADY_EXISTS = '文章已存在',
   ARTICLE_DOES_NOT_EXIST = '文章不存在',
   SMS_SEND_FAIL = '短信发送失败',
-  SMS_SEND_WAIT = '发送频率过快，轻稍后再发送',
+  SMS_SEND_WAIT = '发送频率过快，请稍后再发送',
   PLEASE_SEND_THE_VERIFICATION_CODE_FIRST = '请先发送验证码',
   VERIFICATION_CODE_ERROR = '验证码错误',
   FEEDBACK_DOES_NOT_EXIST = '反馈不存在',

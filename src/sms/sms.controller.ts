@@ -24,6 +24,11 @@ export class SmsController {
   async sendSms(@Body() sendSmsDto: SendSmsDto) {
     const code = await this.smsService.randomString(6);
     if (process.env.NODE_ENV === 'development') {
+      this.cacheManager.set(
+        `${sendSmsDto.phone} 'send_sms`,
+        JSON.stringify(code),
+        300,
+      );
       return code;
     }
     const key = await this.cacheManager.get(`${sendSmsDto.phone} 'send_sms`);

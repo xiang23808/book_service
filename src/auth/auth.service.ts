@@ -46,7 +46,6 @@ export class AuthService {
 
   async phoneLogin(phoneLoginDto: PhoneLoginDto, ipAddress: string) {
     const key = await this.cacheManager.get(`${phoneLoginDto.phone} 'send_sms`);
-
     if (typeof key === 'string') {
       const code = JSON.parse(key);
       if (code !== phoneLoginDto.verification_code) {
@@ -55,9 +54,10 @@ export class AuthService {
           ResponseStatus.VERIFICATION_CODE_ERROR,
         );
       }
-      const userModel = await this.usersService.usersRepository.findOneBy({
-        phone: phoneLoginDto.phone,
-      });
+      const userModel = await this.usersService.usersRepository.findOneBy([
+        { phone: phoneLoginDto.phone },
+        { username: phoneLoginDto.phone },
+      ]);
       let user: User;
       if (!userModel) {
         phoneLoginDto.login_ip = ipAddress;

@@ -28,6 +28,6 @@ export class Help {
   updated_at: string;
 
   @Exclude()
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp' })
   deleted_at: string;
 }

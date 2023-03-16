@@ -52,7 +52,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    console.log(id);
     return this.usersService.update(+id, updateUserDto);
   }
 
@@ -70,8 +69,7 @@ export class UsersController {
 
   @Post('set_password')
   async setPassword(@Body() setPasswordDto: SetPasswordDto) {
-    const res = await this.usersService.setPassword(setPasswordDto);
-    console.log(res);
+    await this.usersService.setPassword(setPasswordDto);
     return '修改成功';
   }
 }

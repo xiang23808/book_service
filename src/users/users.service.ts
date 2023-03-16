@@ -93,9 +93,10 @@ export class UsersService {
           ResponseStatus.VERIFICATION_CODE_ERROR,
         );
       }
-      const userModel = await this.usersRepository.findOneBy({
-        phone: setPasswordDto.phone,
-      });
+      const userModel = await this.usersRepository.findOneBy([
+        { phone: setPasswordDto.phone },
+        { username: setPasswordDto.phone },
+      ]);
       if (!userModel) {
         throw new HttpException(
           ResponseMessage.ARTICLE_DOES_NOT_EXIST,

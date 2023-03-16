@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { BcryptService } from '../tool/bcrypt/bcrypt.service';
@@ -7,15 +7,15 @@ import { PhoneLoginDto } from '../users/dto/phone-login.dto';
 import { User } from '../users/entities/user.entity';
 import { formatDate } from '../tool/date/date';
 import { plainToClass } from 'class-transformer';
-import { Cache } from 'cache-manager';
 import { SmsService } from '../sms/sms.service';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache,
+    @InjectRedis() private readonly redis: Redis,
     private readonly smsService: SmsService,
   ) {}
 
@@ -45,7 +45,7 @@ export class AuthService {
   }
 
   async phoneLogin(phoneLoginDto: PhoneLoginDto, ipAddress: string) {
-    const key = await this.cacheManager.get(`${phoneLoginDto.phone} 'send_sms`);
+    const key = await this.redis.get(`${phoneLoginDto.phone} 'send_sms`);
     if (typeof key === 'string') {
       const code = JSON.parse(key);
       if (code !== phoneLoginDto.verification_code) {
@@ -74,7 +74,7 @@ export class AuthService {
         user = userModel;
       }
       const payload = { username: user.username, sub: user.id };
-      this.cacheManager.del(`${phoneLoginDto.phone} 'send_sms`);
+      this.redis.del(`${phoneLoginDto.phone} 'send_sms`);
       return {
         access_token: this.jwtService.sign(payload),
       };

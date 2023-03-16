@@ -1,14 +1,10 @@
-import {
-  CACHE_MANAGER,
-  HttpException,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Article } from './entities/article.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
-import { Cache } from 'cache-manager';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
 
 export interface ArticlesRo {
   list: Article[];
@@ -19,8 +15,7 @@ export interface ArticlesRo {
 export class ArticlesService {
   constructor(
     @InjectRepository(Article) private articlesRepository: Repository<Article>,
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   async create(post: Partial<Article>): Promise<Article> {
@@ -57,7 +52,7 @@ export class ArticlesService {
 
   async findById(id): Promise<Article> {
     const article = await this.articlesRepository.findOne({ where: { id } });
-    this.cacheManager.set(`${id} 'article`, JSON.stringify(article), 1800);
+    this.redis.set(`${id} 'article`, JSON.stringify(article), 'EX', 1800);
     return article;
   }
 

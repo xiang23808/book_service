@@ -1,9 +1,4 @@
-import {
-  CACHE_MANAGER,
-  HttpException,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -12,16 +7,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
 import { plainToClass } from 'class-transformer';
 import { SetPasswordDto } from './dto/set-password.dto';
-import { Cache } from 'cache-manager';
 import { BcryptService } from '../tool/bcrypt/bcrypt.service';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     public usersRepository: Repository<User>,
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -82,9 +77,7 @@ export class UsersService {
   }
 
   async setPassword(setPasswordDto: SetPasswordDto) {
-    const key = await this.cacheManager.get(
-      `${setPasswordDto.phone} 'send_sms`,
-    );
+    const key = await this.redis.get(`${setPasswordDto.phone} 'send_sms`);
     if (typeof key === 'string') {
       const code = JSON.parse(key);
       if (code !== setPasswordDto.verification_code) {
@@ -107,7 +100,7 @@ export class UsersService {
         setPasswordDto.password.toString(),
       );
       await this.usersRepository.save(userModel);
-      this.cacheManager.del(`${setPasswordDto.phone} 'send_sms`);
+      this.redis.del(`${setPasswordDto.phone} 'send_sms`);
       return true;
     }
     throw new HttpException(

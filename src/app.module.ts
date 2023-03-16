@@ -1,6 +1,4 @@
 import {
-  CacheModule,
-  CacheStore,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -18,7 +16,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ArticlesModule } from './articles/articles.module';
 import { LocalModule } from './upload/local/local.module';
-import { redisStore } from 'cache-manager-redis-store';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BcryptService } from './tool/bcrypt/bcrypt.service';
@@ -27,6 +24,7 @@ import { SmsModule } from './sms/sms.module';
 import { HelpsModule } from './information/helps/helps.module';
 import { FeedbacksModule } from './information/feedbacks/feedbacks.module';
 import { SurveyModule } from './task/survey/survey.module';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
   imports: [
@@ -36,12 +34,10 @@ import { SurveyModule } from './task/survey/survey.module';
       load: [customConfig], // 加载自定义配置项
     }),
 
-    CacheModule.register({
-      store: redisStore as unknown as CacheStore,
-      isGlobal: true,
-      inject: [ConfigService],
+    RedisModule.forRootAsync({
       useFactory: (configService: ConfigService) =>
         configService.get('REDIS_CONFIG'),
+      inject: [ConfigService],
     }),
 
     TypeOrmModule.forRootAsync({

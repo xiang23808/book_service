@@ -9,29 +9,29 @@ import {
 import { SendSmsDto } from './dto/send-sms.dto';
 import { SmsService } from './sms.service';
 import { ResponseMessage, ResponseStatus } from '../code/response-status.enum';
-import { Cache } from 'cache-manager';
-import { Logger } from '../tool/log/log4js';
+import Redis from 'ioredis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 
 @Controller('sms')
 export class SmsController {
   constructor(
     private readonly smsService: SmsService,
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   @Post('send_sms')
   async sendSms(@Body() sendSmsDto: SendSmsDto) {
     const code = await this.smsService.randomString(6);
     if (process.env.NODE_ENV === 'development') {
-      this.cacheManager.set(
+      this.redis.set(
         `${sendSmsDto.phone} 'send_sms`,
         JSON.stringify(code),
+        'EX',
         300,
       );
       return code;
     }
-    const key = await this.cacheManager.get(`${sendSmsDto.phone} 'send_sms`);
+    const key = await this.redis.get(`${sendSmsDto.phone} 'send_sms`);
     if (typeof key === 'string') {
       throw new HttpException(
         ResponseMessage.SMS_SEND_WAIT,
@@ -42,9 +42,10 @@ export class SmsController {
     const res = await this.smsService.sendSms(sendSmsDto.phone, code);
 
     if (JSON.parse(res).code === 'OK') {
-      this.cacheManager.set(
+      this.redis.set(
         `${sendSmsDto.phone} 'send_sms`,
         JSON.stringify(code),
+        'EX',
         300,
       );
       return '发送成功';

@@ -6,20 +6,20 @@ import {
   Param,
   Delete,
   Query,
-  Patch, Inject, CACHE_MANAGER
+  Patch,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { Cache } from 'cache-manager';
 import { Article } from './entities/article.entity';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
 
 @Controller('articles')
 export class ArticlesController {
   constructor(
     private readonly articlesService: ArticlesService,
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   @Post('create')
@@ -29,7 +29,7 @@ export class ArticlesController {
 
   @Get(':id')
   async findById(@Param('id') id) {
-    const key = await this.cacheManager.get(`${id} 'article`);
+    const key = await this.redis.get(`${id} 'article`);
     let article: Article | string;
     if (typeof key === 'string') {
       article = JSON.parse(key);

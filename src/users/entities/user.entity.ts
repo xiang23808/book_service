@@ -13,6 +13,7 @@ import { Article } from '../../articles/entities/article.entity';
 import { BcryptService } from '../../tool/bcrypt/bcrypt.service';
 import { Feedback } from '../../information/feedbacks/entities/feedback.entity';
 import { SurveyAnswer } from '../../task/survey/answer/entities/survey_answer.entity';
+import { UserTaskLog } from '../task_log/entities/task_log.entity';
 
 @Entity()
 export class User {
@@ -92,4 +93,7 @@ export class User {
 
   @OneToMany(() => SurveyAnswer, (surveyAnswer) => surveyAnswer.user)
   surveyAnswer: SurveyAnswer[];
+
+  @OneToMany(() => UserTaskLog, (userTaskLog) => userTaskLog.user)
+  userTaskLog: UserTaskLog[];
 }

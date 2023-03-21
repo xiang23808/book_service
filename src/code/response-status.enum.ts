@@ -9,6 +9,7 @@ export enum ResponseStatus {
   PLEASE_SEND_THE_VERIFICATION_CODE_FIRST = 41006,
   VERIFICATION_CODE_ERROR = 41007,
   FEEDBACK_DOES_NOT_EXIST = 41008,
+  USER_ALREADY_CLOCK_IN = 41009,
 }
 
 export enum ResponseMessage {
@@ -22,4 +23,5 @@ export enum ResponseMessage {
   PLEASE_SEND_THE_VERIFICATION_CODE_FIRST = '请先发送验证码',
   VERIFICATION_CODE_ERROR = '验证码错误',
   FEEDBACK_DOES_NOT_EXIST = '反馈不存在',
+  USER_ALREADY_CLOCK_IN = '今日已签到',
 }

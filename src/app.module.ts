@@ -25,6 +25,11 @@ import { HelpsModule } from './information/helps/helps.module';
 import { FeedbacksModule } from './information/feedbacks/feedbacks.module';
 import { SurveyModule } from './task/survey/survey.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { UserClockInLogModule } from './users/clock_in_log/clock.module';
+import { UserTaskLogModule } from './users/task_log/task_log.module';
+import { UserTaskModule } from './users/task/user_task.module';
+import { UserInviteModule } from './users/invite/user_invite.module';
+import { UserInviteLogModule } from './users/integral_log/user_invite_log.module';
 
 @Module({
   imports: [
@@ -78,6 +83,11 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
     HelpsModule,
     FeedbacksModule,
     SurveyModule,
+    UserClockInLogModule,
+    UserTaskLogModule,
+    UserTaskModule,
+    UserInviteModule,
+    UserInviteLogModule,
   ],
   controllers: [AppController],
   providers: [AppService, BcryptService, SmsService],

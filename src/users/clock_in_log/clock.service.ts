@@ -4,13 +4,22 @@ import { Between, LessThanOrEqual, Repository } from 'typeorm';
 import { CreateClockDto } from './dto/create-clock.dto';
 import { UserClockInLog } from './entities/clock_in_log.entity';
 import * as moment from 'moment';
-import { ResponseMessage, ResponseStatus } from '../../code/response-status.enum';
+import {
+  ResponseMessage,
+  ResponseStatus,
+} from '../../code/response-status.enum';
+import { User } from '../entities/user.entity';
+import { UserIntegralLog } from '../integral_log/entities/integral_log.entity';
 
 @Injectable()
 export class ClockService {
   constructor(
     @InjectRepository(UserClockInLog)
     private clockRepository: Repository<UserClockInLog>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(UserIntegralLog)
+    private userIntegralLogRepository: Repository<UserIntegralLog>,
   ) {}
 
   async create(createClockDto: CreateClockDto, req) {
@@ -39,9 +48,13 @@ export class ClockService {
       },
     });
 
+    //正常奖励20，连续7次奖励50，7次后清零
+    let $integral = 20;
     if (yesterdayClock) {
       createClockDto.times = yesterdayClock.times + 1;
-      if (yesterdayClock.times === 7) {
+      if (yesterdayClock.times === 6) {
+        $integral = 50;
+      } else if (yesterdayClock.times === 7) {
         createClockDto.times = 1;
       }
     } else {
@@ -50,7 +63,9 @@ export class ClockService {
     createClockDto.date = moment().format('YYYY-MM-DD');
     createClockDto.user_id = req.user.id;
 
-    //todo 发放积分User，添加积分记录：UserIntegralLog
+    this.addIntegral(req.user.id, $integral);
+    this.addIntegralLog(req.user.id, $integral);
+
     return await this.clockRepository.save(createClockDto);
   }
 
@@ -64,5 +79,28 @@ export class ClockService {
         ),
       },
     });
+  }
+
+  //增加积分
+  async addIntegral(id: number, $integral: number) {
+    const exitsUser = await this.userRepository.findOneBy({ id: id });
+    if (!exitsUser) {
+      throw new HttpException(
+        ResponseMessage.ARTICLE_DOES_NOT_EXIST,
+        ResponseStatus.ARTICLE_DOES_NOT_EXIST,
+      );
+    }
+    exitsUser.integral += $integral;
+    this.userRepository.save(exitsUser);
+  }
+
+  //积分记录
+  async addIntegralLog(id: number, $integral: number) {
+    const integralLog = new UserIntegralLog();
+    integralLog.user_id = id;
+    integralLog.integral = $integral;
+    integralLog.name = '签到积分奖励';
+    integralLog.date = moment().format('YYYY-MM-DD');
+    await this.userIntegralLogRepository.save(integralLog);
   }
 }

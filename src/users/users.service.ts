@@ -108,4 +108,17 @@ export class UsersService {
       ResponseStatus.PLEASE_SEND_THE_VERIFICATION_CODE_FIRST,
     );
   }
+
+  async addIntegral(id: number, $integral) {
+    const exitsUser = await this.usersRepository.findOneBy({ id: id });
+    if (!exitsUser) {
+      throw new HttpException(
+        ResponseMessage.ARTICLE_DOES_NOT_EXIST,
+        ResponseStatus.ARTICLE_DOES_NOT_EXIST,
+      );
+    }
+    exitsUser.integral += $integral;
+
+    return this.usersRepository.save(exitsUser);
+  }
 }

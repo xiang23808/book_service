@@ -10,6 +10,8 @@ export enum ResponseStatus {
   VERIFICATION_CODE_ERROR = 41007,
   FEEDBACK_DOES_NOT_EXIST = 41008,
   USER_ALREADY_CLOCK_IN = 41009,
+  USER_ALREADY_INVITE = 410010,
+  USER_NOT_EXIST = 410011,
 }
 
 export enum ResponseMessage {
@@ -24,4 +26,6 @@ export enum ResponseMessage {
   VERIFICATION_CODE_ERROR = '验证码错误',
   FEEDBACK_DOES_NOT_EXIST = '反馈不存在',
   USER_ALREADY_CLOCK_IN = '今日已签到',
+  USER_ALREADY_INVITE = '您已被邀请',
+  USER_NOT_EXIST = '邀请用户不存在',
 }

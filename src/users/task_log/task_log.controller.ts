@@ -11,7 +11,7 @@ import { TaskLogService } from './task_log.service';
 import { CreateTaskLogDto } from './dto/create-task_log.dto';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
-@Controller('user/task_log')
+@Controller('users/task_log')
 export class TaskLogController {
   constructor(private readonly taskLogService: TaskLogService) {}
 

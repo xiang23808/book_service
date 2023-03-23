@@ -8,9 +8,10 @@ import {
 import { Survey } from '../../entities/survey.entity';
 import { SurveyQuestion } from '../../question/entities/survey_question.entity';
 import { User } from '../../../../users/entities/user.entity';
+import { Date } from '../../../../entities/user.entity';
 
 @Entity('survey_answers')
-export class SurveyAnswer {
+export class SurveyAnswer extends Date {
   @PrimaryGeneratedColumn()
   id: number; // 标记为主列，值自动生成
 
@@ -50,13 +51,6 @@ export class SurveyAnswer {
     comment: '图片地址',
   })
   pic_url: string;
-
-  @DeleteDateColumn({
-    name: 'deleted_at',
-    type: 'datetime',
-    comment: '删除时间',
-  })
-  deleted_at: string;
 
   @ManyToOne(() => Survey, (survey) => survey.survey_answers)
   @JoinColumn({ name: 'survey_id' })

@@ -1,5 +1,5 @@
 import {
-  Column, DeleteDateColumn,
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -9,9 +9,10 @@ import {
 import { Survey } from '../../entities/survey.entity';
 import { SurveyOption } from '../../option/entities/survey_option.entity';
 import { SurveyAnswer } from '../../answer/entities/survey_answer.entity';
+import { Date } from '../../../../entities/user.entity';
 
 @Entity('survey_questions')
-export class SurveyQuestion {
+export class SurveyQuestion extends Date {
   @PrimaryGeneratedColumn()
   id: number; // 标记为主列，值自动生成
 
@@ -54,13 +55,6 @@ export class SurveyQuestion {
     comment: '图片地址',
   })
   pic_url: string;
-
-  @DeleteDateColumn({
-    name: 'deleted_at',
-    type: 'datetime',
-    comment: '删除时间',
-  })
-  deleted_at: string;
 
   @ManyToOne(() => Survey, (survey) => survey.survey_questions)
   @JoinColumn({ name: 'survey_id' })

@@ -1,18 +1,16 @@
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { UserTaskLog } from '../../task_log/entities/task_log.entity';
+import { Date } from '../../../entities/user.entity';
 
 //用户任务
 @Entity()
-export class UserTask {
+export class UserTask extends Date {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -26,27 +24,6 @@ export class UserTask {
 
   @Column({ comment: '奖励积分', default: 0 })
   integral: number;
-
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'datetime',
-    comment: '创建时间',
-  })
-  created_at: string;
-
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'datetime',
-    comment: '更新时间',
-  })
-  updated_at: string;
-
-  @DeleteDateColumn({
-    name: 'deleted_at',
-    type: 'datetime',
-    comment: '删除时间',
-  })
-  deleted_at: string;
 
   @OneToMany(() => UserTaskLog, (taskLog) => taskLog.userTask)
   taskLog: UserTaskLog[];

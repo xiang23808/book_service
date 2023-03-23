@@ -1,18 +1,16 @@
 import {
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { SurveyQuestion } from '../question/entities/survey_question.entity';
 import { SurveyOption } from '../option/entities/survey_option.entity';
 import { SurveyAnswer } from '../answer/entities/survey_answer.entity';
+import { Date } from '../../../entities/user.entity';
 
 @Entity('surveys')
-export class Survey {
+export class Survey extends Date {
   @PrimaryGeneratedColumn()
   id: number; // 标记为主列，值自动生成
 
@@ -56,27 +54,6 @@ export class Survey {
     comment: '0置顶 1不置顶',
   })
   top_flag: number;
-
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'datetime',
-    comment: '创建时间',
-  })
-  created_at: string;
-
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'datetime',
-    comment: '更新时间',
-  })
-  updated_at: string;
-
-  @DeleteDateColumn({
-    name: 'deleted_at',
-    type: 'datetime',
-    comment: '删除时间',
-  })
-  deleted_at: string;
 
   @Column({
     type: 'int',

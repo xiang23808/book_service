@@ -24,8 +24,11 @@ export default {
   },
 
   REDIS_CONFIG: {
-    host: '127.0.0.1',
-    port: 6379,
-    db: 0,
+    config: {
+      host: process.env.REDIS_HOST ?? '127.0.0.1',
+      port: process.env.REDIS_PORT ?? 6379,
+      db: 0,
+      ttl: 300,
+    },
   },
 };

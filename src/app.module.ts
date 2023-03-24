@@ -40,6 +40,7 @@ import { UserInviteLogModule } from './users/integral_log/user_invite_log.module
     }),
 
     RedisModule.forRootAsync({
+      imports: [ConfigModule],
       useFactory: (configService: ConfigService) =>
         configService.get('REDIS_CONFIG'),
       inject: [ConfigService],

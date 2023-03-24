@@ -20,7 +20,7 @@ steps:
       script:
         - cd /www/wwwroot/book_service
         - git pull
-        - npm install
+        - yarn -i
         #- npm run typeorm:run-migrations
         - npm run build
         - pm2 restart all

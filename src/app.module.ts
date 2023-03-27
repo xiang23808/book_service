@@ -30,6 +30,7 @@ import { UserTaskLogModule } from './users/task_log/task_log.module';
 import { UserTaskModule } from './users/task/user_task.module';
 import { UserInviteModule } from './users/invite/user_invite.module';
 import { UserInviteLogModule } from './users/integral_log/user_invite_log.module';
+import { ChatModule } from './socket/chat.module';
 
 @Module({
   imports: [
@@ -89,6 +90,7 @@ import { UserInviteLogModule } from './users/integral_log/user_invite_log.module
     UserTaskModule,
     UserInviteModule,
     UserInviteLogModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService, BcryptService, SmsService],

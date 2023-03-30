@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, LessThanOrEqual, Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { CreateClockDto } from './dto/create-clock.dto';
 import { UserClockInLog } from './entities/clock_in_log.entity';
 import * as moment from 'moment';

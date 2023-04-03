@@ -12,6 +12,8 @@ import { User } from '../entities/user.entity';
 import { UserIntegralLog } from '../integral_log/entities/integral_log.entity';
 import { UserTask } from '../task/entities/task.entity';
 import { UserTaskLog } from '../task_log/entities/task_log.entity';
+import { ChatService } from '../../socket/chat.service';
+import { Logger } from '../../tool/log/log4js';
 
 @Injectable()
 export class UserInviteService {
@@ -26,6 +28,7 @@ export class UserInviteService {
     private userTaskRepository: Repository<UserTask>,
     @InjectRepository(UserTaskLog)
     private taskLogRepository: Repository<UserTaskLog>,
+    private readonly chatService: ChatService,
   ) {}
 
   async create(createUserInviteDto: CreateUserInviteDto, req) {
@@ -105,6 +108,15 @@ export class UserInviteService {
     }
     exitsUser.integral += check.integral;
     this.userRepository.save(exitsUser);
+
+    const sockets = this.chatService.get(String(id));
+    if (sockets) {
+      Logger.info('socket发送消息：' + id + exitsUser.integral);
+      sockets.forEach(
+        (socket) => socket.emit('user_integral'),
+        exitsUser.integral,
+      );
+    }
   }
 
   //积分记录

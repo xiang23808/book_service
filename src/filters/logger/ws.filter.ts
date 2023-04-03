@@ -1,8 +1,4 @@
-import {
-  ArgumentsHost,
-  Catch,
-  WsExceptionFilter,
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, WsExceptionFilter } from '@nestjs/common';
 
 /**
  * 全局WebSocket服务的异常处理，
@@ -21,6 +17,7 @@ export class WsServiceExceptionFilter implements WsExceptionFilter {
     // 对异常进行封装以后，需要让框架继续进行调用处理，才能正确的响应给客户端
     // 此时，需要提取到callback这个函数
     // 参考：https://stackoverflow.com/questions/61795299/nestjs-return-ack-in-exception-filter
+
     const callback = host.getArgByIndex(2);
     if (callback && typeof callback === 'function') {
       callback(responseWrapper);

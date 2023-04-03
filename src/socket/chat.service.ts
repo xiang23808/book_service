@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { Socket } from 'socket.io/dist/socket';
+import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from '../auth/constants';
 
 @Injectable()
 export class ChatService {
@@ -43,5 +45,15 @@ export class ChatService {
     this.socketState.forEach((sockets) => all.push(sockets));
 
     return all;
+  }
+
+  async getUserFromSocket(socket: Socket): Promise<any> {
+    const auth = socket.handshake.headers.authorization;
+    const token = auth.split(' ')[1];
+    const user = await new JwtService().verify(token, {
+      secret: jwtConstants.secret,
+    });
+    console.log(user);
+    return user;
   }
 }

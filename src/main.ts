@@ -10,7 +10,7 @@ import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { doc } from 'prettier';
 import * as express from 'express';
 import { join } from 'path';
-import { SocketIoAdapter } from './socket/chat.adapter';
+import { RedisIoAdapter } from './socket/redis.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -33,7 +33,9 @@ async function bootstrap() {
   app.useGlobalInterceptors(new HttpResponseInterceptor());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
-  app.useWebSocketAdapter(new SocketIoAdapter(app));
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
   //微服务
   /*app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,

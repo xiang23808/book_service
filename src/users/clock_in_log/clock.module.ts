@@ -5,10 +5,11 @@ import { ClockService } from './clock.service';
 import { UserClockInLog } from './entities/clock_in_log.entity';
 import { User } from '../entities/user.entity';
 import { UserIntegralLog } from '../integral_log/entities/integral_log.entity';
+import { ChatService } from '../../socket/chat.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserClockInLog, User, UserIntegralLog])],
   controllers: [ClockController],
-  providers: [ClockService],
+  providers: [ClockService, ChatService],
 })
 export class UserClockInLogModule {}

@@ -18,6 +18,7 @@ import { IpAddress } from '../tool/ip/ip';
 import { formatDate } from '../tool/date/date';
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetPasswordDto } from './dto/set-password.dto';
+import { ChatService } from '../socket/chat.service';
 
 @Controller('users')
 export class UsersController {

@@ -10,6 +10,8 @@ import {
 } from '../../code/response-status.enum';
 import { User } from '../entities/user.entity';
 import { UserIntegralLog } from '../integral_log/entities/integral_log.entity';
+import { ChatService } from '../../socket/chat.service';
+import { Logger } from '../../tool/log/log4js';
 
 @Injectable()
 export class ClockService {
@@ -20,6 +22,7 @@ export class ClockService {
     private userRepository: Repository<User>,
     @InjectRepository(UserIntegralLog)
     private userIntegralLogRepository: Repository<UserIntegralLog>,
+    private readonly chatService: ChatService,
   ) {}
 
   async create(createClockDto: CreateClockDto, req) {
@@ -92,6 +95,14 @@ export class ClockService {
     }
     exitsUser.integral += $integral;
     this.userRepository.save(exitsUser);
+    const sockets = this.chatService.get(String(id));
+    if (sockets) {
+      Logger.info('socket发送消息：' + id + exitsUser.integral);
+      sockets.forEach(
+        (socket) => socket.emit('user_integral'),
+        exitsUser.integral,
+      );
+    }
   }
 
   //积分记录

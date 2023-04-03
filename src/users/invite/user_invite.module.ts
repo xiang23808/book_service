@@ -7,6 +7,7 @@ import { User } from '../entities/user.entity';
 import { UserIntegralLog } from '../integral_log/entities/integral_log.entity';
 import { UserTask } from '../task/entities/task.entity';
 import { UserTaskLog } from '../task_log/entities/task_log.entity';
+import { ChatService } from '../../socket/chat.service';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { UserTaskLog } from '../task_log/entities/task_log.entity';
     ]),
   ],
   controllers: [UserInviteController],
-  providers: [UserInviteService],
+  providers: [UserInviteService, ChatService],
 })
 export class UserInviteModule {}

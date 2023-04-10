@@ -30,6 +30,7 @@ export class ChatGateway {
 
   async handleConnection(socket: Socket) {
     let user;
+    Logger.info('有人请求了' + socket.id);
     try {
       user = await this.chatService.getUserFromSocket(socket);
     } catch (exception: any) {

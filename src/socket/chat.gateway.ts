@@ -34,6 +34,7 @@ export class ChatGateway {
     try {
       user = await this.chatService.getUserFromSocket(socket);
     } catch (exception: any) {
+      console.log(exception.message);
       return socket.client._disconnect();
     }
     this.chatService.add(String(user.sub), socket);
@@ -46,6 +47,7 @@ export class ChatGateway {
     try {
       user = await this.chatService.getUserFromSocket(socket);
     } catch (exception: any) {
+      console.log(exception.message);
       return socket.client._disconnect();
     }
     this.chatService.remove(String(user.sub), socket);

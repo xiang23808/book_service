@@ -48,8 +48,7 @@ export class ChatService {
   }
 
   async getUserFromSocket(socket: Socket): Promise<any> {
-    const auth = socket.handshake.headers.authorization;
-    const token = auth.split(' ')[1];
+    const token = socket.handshake.query.token.toString();
     const user = await new JwtService().verify(token, {
       secret: jwtConstants.secret,
     });

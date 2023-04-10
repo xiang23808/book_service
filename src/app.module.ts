@@ -27,6 +27,7 @@ import { UserTaskModule } from './users/task/user_task.module';
 import { UserInviteModule } from './users/invite/user_invite.module';
 import { UserInviteLogModule } from './users/integral_log/user_invite_log.module';
 import { ChatModule } from './socket/chat.module';
+import { BalanceLogModule } from './users/user_balance_log/balance.module';
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { ChatModule } from './socket/chat.module';
     UserInviteModule,
     UserInviteLogModule,
     ChatModule,
+    BalanceLogModule,
   ],
   controllers: [AppController],
   providers: [AppService, BcryptService, SmsService],

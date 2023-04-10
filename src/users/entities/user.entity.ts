@@ -61,6 +61,9 @@ export class User {
   @Column({ comment: '积分', default: 0 })
   integral: number;
 
+  @Column({ comment: '余额', default: 0 })
+  balance: number;
+
   @Column({ type: 'boolean', comment: '用户状态:1-正常:0:禁用', default: 1 })
   status: number;
 

@@ -12,6 +12,8 @@ export enum ResponseStatus {
   USER_ALREADY_CLOCK_IN = 41009,
   USER_ALREADY_INVITE = 410010,
   USER_NOT_EXIST = 410011,
+  INSUFFICIENT_INTEGRAL = 410012,
+  INTEGRAL_NUMBER_ERROR = 410013,
 }
 
 export enum ResponseMessage {
@@ -28,4 +30,6 @@ export enum ResponseMessage {
   USER_ALREADY_CLOCK_IN = '今日已签到',
   USER_ALREADY_INVITE = '您已被邀请',
   USER_NOT_EXIST = '邀请用户不存在',
+  INSUFFICIENT_INTEGRAL = '积分不足',
+  INTEGRAL_NUMBER_ERROR = '积分需要是100的倍数',
 }

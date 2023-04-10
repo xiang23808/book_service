@@ -18,7 +18,7 @@ import { IpAddress } from '../tool/ip/ip';
 import { formatDate } from '../tool/date/date';
 import { CreateUserDto } from './dto/create-user.dto';
 import { SetPasswordDto } from './dto/set-password.dto';
-import { ChatService } from '../socket/chat.service';
+import { ExchangeBalanceDto } from './dto/exchange-balance.dto';
 
 @Controller('users')
 export class UsersController {
@@ -72,5 +72,15 @@ export class UsersController {
   async setPassword(@Body() setPasswordDto: SetPasswordDto) {
     await this.usersService.setPassword(setPasswordDto);
     return '修改成功';
+  }
+
+  @Post('exchange_balance')
+  @UseGuards(JwtAuthGuard)
+  async exchangeBalance(
+    @Body() exchangeBalanceDto: ExchangeBalanceDto,
+    @Request() req,
+  ) {
+    await this.usersService.exchangeBalance(exchangeBalanceDto, req);
+    return '兑换成功';
   }
 }

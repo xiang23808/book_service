@@ -10,12 +10,18 @@ import { SetPasswordDto } from './dto/set-password.dto';
 import { BcryptService } from '../tool/bcrypt/bcrypt.service';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
+import { ExchangeBalanceDto } from './dto/exchange-balance.dto';
+import { BalanceLog } from './user_balance_log/entities/balance_log.entity';
+import { CreateBalanceDto } from './user_balance_log/dto/create-balance.dto';
+import * as moment from 'moment/moment';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     public usersRepository: Repository<User>,
+    @InjectRepository(BalanceLog)
+    public balanceLogRepository: Repository<BalanceLog>,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
@@ -120,5 +126,32 @@ export class UsersService {
     exitsUser.integral += $integral;
 
     return this.usersRepository.save(exitsUser);
+  }
+
+  async exchangeBalance(exchangeBalanceDto: ExchangeBalanceDto, req) {
+    if (exchangeBalanceDto.integral % 100 != 0) {
+      throw new HttpException(
+        ResponseMessage.INTEGRAL_NUMBER_ERROR,
+        ResponseStatus.INTEGRAL_NUMBER_ERROR,
+      );
+    }
+    if (exchangeBalanceDto.integral > req.user.integral) {
+      throw new HttpException(
+        ResponseMessage.INSUFFICIENT_INTEGRAL,
+        ResponseStatus.INSUFFICIENT_INTEGRAL,
+      );
+    }
+
+    const createBalanceDto = new CreateBalanceDto();
+    req.user.balance += exchangeBalanceDto.integral / 100;
+    req.user.integral -= exchangeBalanceDto.integral;
+
+    createBalanceDto.user_id = req.user.id;
+    createBalanceDto.add_balance = exchangeBalanceDto.integral / 100;
+    createBalanceDto.balance = req.user.balance;
+    createBalanceDto.date = moment().format('YYYY-MM-DD');
+
+    this.balanceLogRepository.save(createBalanceDto);
+    return this.usersRepository.save(req.user);
   }
 }

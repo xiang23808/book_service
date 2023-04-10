@@ -64,7 +64,7 @@ export class ChatGateway {
     console.log('发送消息了');
 
     //await new Promise((r) => setTimeout(r, 2000));
-    console.log(client);
+    Logger.info('发送消息了' + client.id);
     // const io = new Server();
 
     const io = new Server();

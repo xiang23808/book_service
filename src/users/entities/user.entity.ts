@@ -85,18 +85,28 @@ export class User {
     this.password = await new BcryptService().hash(this.password.toString());
   }
 
-  @OneToOne(() => InfoEntity, (info) => info.user)
+  @OneToOne(() => InfoEntity, (info) => info.user, {
+    createForeignKeyConstraints: false,
+  })
   info: InfoEntity;
 
-  @OneToMany(() => Article, (articles) => articles.user)
+  @OneToMany(() => Article, (articles) => articles.user, {
+    createForeignKeyConstraints: false,
+  })
   articles: Article[];
 
-  @OneToMany(() => Feedback, (feedback) => feedback.user)
+  @OneToMany(() => Feedback, (feedback) => feedback.user, {
+    createForeignKeyConstraints: false,
+  })
   feedback: Feedback[];
 
-  @OneToMany(() => SurveyAnswer, (surveyAnswer) => surveyAnswer.user)
+  @OneToMany(() => SurveyAnswer, (surveyAnswer) => surveyAnswer.user, {
+    createForeignKeyConstraints: false,
+  })
   surveyAnswer: SurveyAnswer[];
 
-  @OneToMany(() => UserTaskLog, (userTaskLog) => userTaskLog.user)
+  @OneToMany(() => UserTaskLog, (userTaskLog) => userTaskLog.user, {
+    createForeignKeyConstraints: false,
+  })
   userTaskLog: UserTaskLog[];
 }

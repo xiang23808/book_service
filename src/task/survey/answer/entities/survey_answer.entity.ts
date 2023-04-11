@@ -52,18 +52,25 @@ export class SurveyAnswer extends Date {
   })
   pic_url: string;
 
-  @ManyToOne(() => Survey, (survey) => survey.survey_answers)
+  @ManyToOne(() => Survey, (survey) => survey.survey_answers, {
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn({ name: 'survey_id' })
   survey: Survey;
 
   @ManyToOne(
     () => SurveyQuestion,
     (survey_question) => survey_question.survey_answers,
+    {
+      createForeignKeyConstraints: false,
+    },
   )
   @JoinColumn({ name: 'question_id' })
   survey_question: SurveyQuestion;
 
-  @ManyToOne(() => User, (user) => user.surveyAnswer)
+  @ManyToOne(() => User, (user) => user.surveyAnswer, {
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

@@ -23,7 +23,9 @@ export class Feedback {
   @Column({ type: 'boolean', comment: '状态:1-正常:0:禁用', default: 1 })
   status: number;
 
-  @ManyToOne(() => User, (user) => user.feedback)
+  @ManyToOne(() => User, (user) => user.feedback, {
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn({ name: 'user_id' })
   @Column({ type: 'tinyint' })
   user: User;

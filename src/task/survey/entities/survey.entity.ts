@@ -78,12 +78,19 @@ export class Survey extends Date {
   @OneToMany(
     () => SurveyQuestion,
     (survey_questions) => survey_questions.survey,
+    {
+      createForeignKeyConstraints: false,
+    },
   )
   survey_questions: SurveyQuestion[];
 
-  @OneToMany(() => SurveyOption, (survey_options) => survey_options.survey)
+  @OneToMany(() => SurveyOption, (survey_options) => survey_options.survey, {
+    createForeignKeyConstraints: false,
+  })
   survey_options: SurveyOption[];
 
-  @OneToMany(() => SurveyAnswer, (survey_answers) => survey_answers.survey)
+  @OneToMany(() => SurveyAnswer, (survey_answers) => survey_answers.survey, {
+    createForeignKeyConstraints: false,
+  })
   survey_answers: SurveyQuestion[];
 }

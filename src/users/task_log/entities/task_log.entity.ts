@@ -35,11 +35,15 @@ export class UserTaskLog  extends Date {
   @Column({ type: 'date', default: null })
   date: string;
 
-  @ManyToOne(() => User, (user) => user.userTaskLog)
+  @ManyToOne(() => User, (user) => user.userTaskLog, {
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => UserTask, (userTask) => userTask.taskLog)
+  @ManyToOne(() => UserTask, (userTask) => userTask.taskLog, {
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn({ name: 'user_task_id' })
   userTask: UserTask;
 }

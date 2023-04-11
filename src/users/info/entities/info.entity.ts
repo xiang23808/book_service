@@ -18,7 +18,9 @@ export class InfoEntity {
   @Column()
   gender: string;
 
-  @OneToOne(() => User, (user) => user.info)
+  @OneToOne(() => User, (user) => user.info, {
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 }
